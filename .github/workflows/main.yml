@@ -1,0 +1,49 @@
+name: Python Pull-Request
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "ironsource_api/**"
+      - "tests/**"
+    tags-ignore:
+      - '**'
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  GH_TOKEN: ${{secrets.PAT_TOKEN}}
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        python-version: [3.8,3.9,'3.10']
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        brew install gitleaks
+        python -m pip install --upgrade pip setuptools wheel
+        pip install -r dev_requirements.txt 
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Test with pytest
+      run: |
+        pytest -s  --log-cli-level=INFO --timeout=3000 --color=auto --log-cli-format="%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"  ./tests/unit_tests/
+    - name: Lint with pylint
+      run: |
+        pylint --rcfile ./.pylintrc ironsource_api
+        
+    - name: gitleaks-action
+      run: |
+          gitleaks --verbose detect --log-opts --since="2021-11-25"
+  
+        

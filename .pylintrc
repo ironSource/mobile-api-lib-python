@@ -1,0 +1,6 @@
+[MESSAGES CONTROL]
+disable=broad-except, too-many-arguments, too-many-locals,too-few-public-methods,duplicate-code
+
+[FORMAT]
+max-line-length=240
+

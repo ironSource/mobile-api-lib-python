@@ -1,0 +1,7 @@
+venv
+.idea
+ironsource_api/__init__.pyc
+ironsource_api/__pycache__/
+dist
+ironsource_api.egg-info
+__pycache__

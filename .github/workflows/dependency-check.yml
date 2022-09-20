@@ -1,0 +1,31 @@
+name: Pull-Request-Dependency
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "requirements.txt"
+      - "dev_requirements.txt"
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  GH_TOKEN: ${{secrets.PAT_TOKEN}}
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@v3
+      - name: "get refs"
+        id: vars
+        run: |
+          echo ::set-output name=base_ref::${{ github.event.pull_request.base.ref || github.ref }}
+          echo ::set-output name=head_ref::${{ github.event.pull_request.head.ref || github.ref }}
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v2
+        with:
+          fail-on-severity: high
+          base-ref: ${{steps.vars.outputs.base_ref}}
+          head-ref: ${{steps.vars.outputs.head_ref}}
