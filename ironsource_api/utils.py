@@ -12,7 +12,7 @@ import io
 from dataclasses import dataclass
 import httpx
 
-from ironsource_api import _version
+from ironsource_api import __version__
 
 if sys.version_info >= (3, 8):
     # pylint: disable=ungrouped-imports
@@ -20,7 +20,6 @@ if sys.version_info >= (3, 8):
 else:
     from typing_extensions import get_args, get_origin # pylint: disable=import-error
 
-__version__ = _version.get_versions()['version']
 
 BARRIER_AUTH_URL = "https://platform.ironsrc.com/partners/publisher/auth"
 
