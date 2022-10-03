@@ -3,5 +3,5 @@ venv
 ironsource_api/__init__.pyc
 ironsource_api/__pycache__/
 dist
-ironsource_api.egg-info
+mobile_api_lib_python.egg-info
 __pycache__

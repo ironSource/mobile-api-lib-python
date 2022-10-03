@@ -2,5 +2,3 @@ include README.md
 include requirements.txt
 graft ironsource_api
 recursive-exclude * *.py[co]
-include versioneer.py
-include ironsource_api/_version.py

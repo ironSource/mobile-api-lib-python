@@ -31,7 +31,6 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        brew install gitleaks
         python -m pip install --upgrade pip setuptools wheel
         pip install -r dev_requirements.txt 
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
@@ -41,9 +40,3 @@ jobs:
     - name: Lint with pylint
       run: |
         pylint --rcfile ./.pylintrc ironsource_api
-        
-    - name: gitleaks-action
-      run: |
-          gitleaks --verbose detect --log-opts --since="2021-11-25"
-  
-        
