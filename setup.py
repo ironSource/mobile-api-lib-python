@@ -9,7 +9,7 @@ packages = [
     package for package in find_packages() if package.startswith("ironsource_api")
 ]
 setup(
-    name='mobile-api-lib-python',
+    name='ironsource-mobile-api',
     packages=packages,
     version='0.0.2',
     url='https://github.com/ironSource/mobile-api-lib-python',
