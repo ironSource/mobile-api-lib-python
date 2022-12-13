@@ -11,7 +11,7 @@ packages = [
 setup(
     name='ironsource-mobile-api',
     packages=packages,
-    version='1.0.0',
+    version='1.1.0',
     url='https://github.com/ironSource/mobile-api-lib-python',
     license='Apache-2.0',
     author='IronSource Ltd.',
