@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/ironsource/mobile-api-lib-python/compare/v1.0.0...v1.1.0) (2022-12-13)
+
+
+### Features
+
+* implementation of instances API V3 ([9f60a5d](https://github.com/ironsource/mobile-api-lib-python/commit/9f60a5d0edb4dd3660b56c940c1d5754c0daadc1))
+
 ## 1.0.0 (2022-11-01)
 
 
