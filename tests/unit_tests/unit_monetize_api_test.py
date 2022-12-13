@@ -173,7 +173,34 @@ class Test_UnitTestsMonetizeAPI(unittest.IsolatedAsyncioTestCase):
                         "rewardedVideo": [{"instanceName": "TEST", "status": "active", "PlacementId": "TEST"}]}}}
         }
         mocked_req.assert_called_once_with(
-            method='post', url="https://platform.ironsrc.com/partners/publisher/instances/v1", **options)
+            method='post', url="https://platform.ironsrc.com/partners/publisher/instances/v3", **options)
+
+    @pytest.mark.asyncio
+    async def test_unit_create_new_instance_without_appConfig(self):
+
+        mocked_req = self.get_mock_exec_req('{\"TEST\":\"TEST\"}')
+
+        vungle_instance = VungleInstance(instance_name='TEST_2', ad_unit=AdUnits.RewardedVideo, app_id='',
+                                         reporting_api_id='', placement_id='TEST_2', status=True)
+
+        res = await ironsrc_api.monetize_api().add_instances(self.__class__.TEST_APP_KEY,
+                                                              [ vungle_instance])
+
+        options = {
+            'headers': {
+                'Authorization': 'Bearer TOKEN'
+            },
+            'json': {
+                "appKey": "1234abc",
+                "configurations":
+                {
+                    "Vungle": {
+                      
+                        "rewardedVideo": [{"instanceName": "TEST_2", "status": "active", "PlacementId": "TEST_2"}]}}}
+        }
+        mocked_req.assert_called_once_with(
+            method='post', url="https://platform.ironsrc.com/partners/publisher/instances/v3", **options)
+
 
     @pytest.mark.asyncio
     async def test_unit_update_instances(self):
@@ -232,7 +259,7 @@ class Test_UnitTestsMonetizeAPI(unittest.IsolatedAsyncioTestCase):
             }
         }
         mocked_req.assert_called_once_with(
-            method='put', url='https://platform.ironsrc.com/partners/publisher/instances/v1', **options)
+            method='put', url='https://platform.ironsrc.com/partners/publisher/instances/v3', **options)
 
     @pytest.mark.asyncio
     async def test_unit_delete_instances(self):
@@ -250,7 +277,7 @@ class Test_UnitTestsMonetizeAPI(unittest.IsolatedAsyncioTestCase):
             }
         }
         mocked_req.assert_called_once_with(
-            method='delete', url='https://platform.ironsrc.com/partners/publisher/instances/v1', **options)
+            method='delete', url='https://platform.ironsrc.com/partners/publisher/instances/v3', **options)
 
     @pytest.mark.asyncio
     async def test_unit_get_mediation_group(self):

@@ -145,7 +145,7 @@ class IronSourceAPITest(unittest.IsolatedAsyncioTestCase):
 
         assert res['rewardedVideo']
         assert (type(res['rewardedVideo']['ironSource']), len(
-            res['rewardedVideo']['ironSource'])) == (list, 3)
+            res['rewardedVideo']['ironSource'])) == (list, 2)
 
         ironsource_instance = pydash.find(
             res['rewardedVideo']['ironSource'], lambda inst: inst['name'] == 'TEST')
@@ -159,6 +159,28 @@ class IronSourceAPITest(unittest.IsolatedAsyncioTestCase):
                               [{"eCPM": 10, "Countries": ["US"]}, {"eCPM": 5, "Countries": ["IL"]}])
         assert (type(res['rewardedVideo']['Vungle']), len(
             res['rewardedVideo']['Vungle'])) == (list, 1)
+
+    @pytest.mark.run(order=5)
+    async def test_add_instances_without_appconfig(self):
+        iron_src_api.set_credentials(API_CI_USER,
+                                     API_CI_TOKEN,
+                                     API_CI_SECRET)
+
+        assert self.__class__.TEST_APP_KEY != ''
+     
+        vungle_instance = VungleInstance(instance_name='TEST2', ad_unit=AdUnits.RewardedVideo, app_id='',
+                                         reporting_api_id='', placement_id='TEST2', status=True)
+
+        res = await iron_src_api.monetize_api().add_instances(self.__class__.TEST_APP_KEY,
+                                                              [ vungle_instance])
+
+        assert isinstance(res, dict)
+
+        assert res['rewardedVideo']
+        assert (type(res['rewardedVideo']['Vungle']), len(
+            res['rewardedVideo']['Vungle'])) == (list, 2)
+
+       
 
     @pytest.mark.run(order=5)
     async def test_update_instances(self):
@@ -200,7 +222,7 @@ class IronSourceAPITest(unittest.IsolatedAsyncioTestCase):
                                                                 self.__class__.ironsource_instance_id)
         assert isinstance(res, dict)
         assert (type(res['rewardedVideo']['ironSource']), len(
-            res['rewardedVideo']['ironSource'])) == (list, 2)
+            res['rewardedVideo']['ironSource'])) == (list, 1)
 
     @pytest.mark.run(order=8)
     async def test_get_mediation_group(self):
