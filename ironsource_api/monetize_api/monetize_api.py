@@ -21,16 +21,13 @@ ARM_URL = 'https://platform.ironsrc.com/partners/adRevenueMeasurements/v3'
 
 MEDIATION_GROUP_MGMT_URL = 'https://platform.ironsrc.com/partners/publisher/mediation/management/v2'
 
-INSTANCES_API_URL = 'https://platform.ironsrc.com/partners/publisher/instances/v1'
+INSTANCES_API_URL = 'https://platform.ironsrc.com/partners/publisher/instances/v3'
 
 PLACEMENTS_URL = "https://platform.ironsrc.com/partners/publisher/placements/v1"
 
 
 class MonetizeAPI(BaseAPI):
     """IronSource Monetize API"""
-
-
-
 
     ###########
     # Reporting
@@ -338,8 +335,12 @@ class MonetizeAPI(BaseAPI):
             if not instance.get_instance_ad_unit() in body['configurations'][instance.get_ad_source()]:
                 body['configurations'][instance.get_ad_source(
                 )][instance.get_instance_ad_unit()] = []
+            ad_source = body['configurations'][instance.get_ad_source()]
 
-            body['configurations'][instance.get_ad_source()][instance.get_instance_ad_unit()].append(
+            if 'appConfig' in ad_source and ad_source['appConfig'] and all(v == '' for v in list(ad_source['appConfig'].values())):
+                del ad_source['appConfig']
+
+            ad_source[instance.get_instance_ad_unit()].append(
                 instance.get_object())
 
         options = {
